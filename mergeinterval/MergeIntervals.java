@@ -30,6 +30,6 @@ class MergeIntervals {
         int[][] intervals = {{1,3},{2,6},{8,10},{15,18}};
         MergeIntervals solution = new MergeIntervals();
         int[][] result = solution.merge(intervals);
-        System.out.println("Merged intervals: " + Arrays.deepToString(result));
+        System.out.println("Merged intervals: " + Arrays.deepToString(result)); // [[1, 6], [8, 10], [15, 18]]
     }
 }
