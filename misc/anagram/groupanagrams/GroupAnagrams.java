@@ -14,6 +14,12 @@ class GroupAnagrams {
             // If the sorted string is not in the map, add it
             // Add the original string to the list corresponding to the sorted key
             anagramGroups.computeIfAbsent(sortedWord, k -> new ArrayList<>()).add(word);
+
+            //OR
+            /*if (!anagramGroups.containsKey(sortedWord)) {
+                anagramGroups.put(sortedWord, new ArrayList<>());
+            }
+            anagramGroups.get(sortedWord).add(word);*/
         }
 
         return new ArrayList<>(anagramGroups.values());

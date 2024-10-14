@@ -158,6 +158,114 @@ Consider the string: "abcabcbb"
 
 Output: maxLength = 3
 
+
+### HashMap (charIndexMap):
+
+Stores characters as keys and their indices as values. This allows us to quickly check if a character has already appeared within the current window.
+
+### Sliding Window (start, end):
+
+- `start`: Marks the beginning of the current window.
+- `end`: Marks the current character we're processing.
+- If a duplicate character is found (exists in charIndexMap and its index is greater than or equal to start), we update start to be one index after the duplicate character.
+
+### Max Length:
+
+The maximum length is updated after each iteration by calculating the length of the current window (end - start + 1).
+
+## Example Walkthrough:
+
+For the input "abcabcbb":
+
+1. Iteration 1 (end = 0): Current character 'a'. No duplicate, start = 0. Max length = 1.
+2. Iteration 2 (end = 1): Current character 'b'. No duplicate, start = 0. Max length = 2.
+3. Iteration 3 (end = 2): Current character 'c'. No duplicate, start = 0. Max length = 3.
+4. Iteration 4 (end = 3): Current character 'a'. Duplicate found at index 0, move start = 1. Max length = 3.
+5. Iteration 5 (end = 4): Current character 'b'. Duplicate found at index 1, move start = 2. Max length = 3.
+6. Iteration 6 (end = 5): Current character 'c'. Duplicate found at index 2, move start = 3. Max length = 3.
+7. Iteration 7 (end = 6): Current character 'b'. No duplicate in window. Max length = 3.
+8. Iteration 8 (end = 7): Current character 'b'. Duplicate found at index 6, move start = 7. Max length = 3.
+
+Final result: The longest substring without repeating characters is "abc" with a length of 3.
+
+### Input Example:
+String s = "abcabcbb"
+
+We will use a HashMap to track the index of each character and maintain a sliding window to find the longest substring without repeating characters.
+
+### Initialization:
+We initialize:
+- charIndexMap: a HashMap to store the most recent index of each character.
+- start = 0: the left boundary of the sliding window.
+- maxLen = 0: to keep track of the length of the longest substring.
+
+### Step-by-Step Iteration:
+
+1. **Iteration 1: end = 0, character = 'a'**
+   - The character 'a' is not in the charIndexMap.
+   - Add 'a' to the map: {'a': 0}.
+   - The window is from start = 0 to end = 0: 'a'.
+   - Calculate the length of the current substring: end - start + 1 = 1.
+   - Update maxLen: maxLen = 1.
+
+2. **Iteration 2: end = 1, character = 'b'**
+   - The character 'b' is not in the charIndexMap.
+   - Add 'b' to the map: {'a': 0, 'b': 1}.
+   - The window is from start = 0 to end = 1: 'ab'.
+   - Calculate the length of the current substring: end - start + 1 = 2.
+   - Update maxLen: maxLen = 2.
+
+3. **Iteration 3: end = 2, character = 'c'**
+   - The character 'c' is not in the charIndexMap.
+   - Add 'c' to the map: {'a': 0, 'b': 1, 'c': 2}.
+   - The window is from start = 0 to end = 2: 'abc'.
+   - Calculate the length of the current substring: end - start + 1 = 3.
+   - Update maxLen: maxLen = 3.
+
+4. **Iteration 4: end = 3, character = 'a'**
+   - The character 'a' is already in the charIndexMap, and its index (0) is within the current window (start = 0 to end = 3).
+   - Action: Move the start pointer to max(start, charIndexMap.get('a') + 1) = max(0, 0 + 1) = 1.
+   - Update the map with the new index of 'a': {'a': 3, 'b': 1, 'c': 2}.
+   - The window is now from start = 1 to end = 3: 'bca'.
+   - Calculate the length of the current substring: end - start + 1 = 3.
+   - maxLen remains unchanged: maxLen = 3.
+
+5. **Iteration 5: end = 4, character = 'b'**
+   - The character 'b' is already in the charIndexMap, and its index (1) is within the current window (start = 1 to end = 4).
+   - Action: Move the start pointer to max(start, charIndexMap.get('b') + 1) = max(1, 1 + 1) = 2.
+   - Update the map with the new index of 'b': {'a': 3, 'b': 4, 'c': 2}.
+   - The window is now from start = 2 to end = 4: 'cab'.
+   - Calculate the length of the current substring: end - start + 1 = 3.
+   - maxLen remains unchanged: maxLen = 3.
+
+6. **Iteration 6: end = 5, character = 'c'**
+   - The character 'c' is already in the charIndexMap, and its index (2) is within the current window (start = 2 to end = 5).
+   - Action: Move the start pointer to max(start, charIndexMap.get('c') + 1) = max(2, 2 + 1) = 3.
+   - Update the map with the new index of 'c': {'a': 3, 'b': 4, 'c': 5}.
+   - The window is now from start = 3 to end = 5: 'abc'.
+   - Calculate the length of the current substring: end - start + 1 = 3.
+   - maxLen remains unchanged: maxLen = 3.
+
+7. **Iteration 7: end = 6, character = 'b'**
+   - The character 'b' is already in the charIndexMap, and its index (4) is within the current window (start = 3 to end = 6).
+   - Action: Move the start pointer to max(start, charIndexMap.get('b') + 1) = max(3, 4 + 1) = 5.
+   - Update the map with the new index of 'b': {'a': 3, 'b': 6, 'c': 5}.
+   - The window is now from start = 5 to end = 6: 'cb'.
+   - Calculate the length of the current substring: end - start + 1 = 2.
+   - maxLen remains unchanged: maxLen = 3.
+
+8. **Iteration 8: end = 7, character = 'b'**
+   - The character 'b' is already in the charIndexMap, and its index (6) is within the current window (start = 5 to end = 7).
+   - Action: Move the start pointer to max(start, charIndexMap.get('b') + 1) = max(5, 6 + 1) = 7.
+   - Update the map with the new index of 'b': {'a': 3, 'b': 7, 'c': 5}.
+   - The window is now from start = 7 to end = 7: 'b'.
+   - Calculate the length of the current substring: end - start + 1 = 1.
+   - maxLen remains unchanged: maxLen = 3.
+
+### Final Output:
+After going through all the characters, the maximum length of a substring without repeating characters is 3.
+The substrings are 'abc', 'bca', or 'cab'.
+
 ## Complexity Analysis
 
 - Time Complexity: O(n), where n is the length of the input string, as we traverse the string once and perform constant-time operations for each character.
